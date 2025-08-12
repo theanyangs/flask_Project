@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if module %}{{ module|capitalize }} - {% endif %}TEN11 Store</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/checkout.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/home">Don't thai to me Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a href="/home" class="nav-link {% if module == 'home' %}active{% endif %}">Home</a></li>
+                <li class="nav-item"><a href="/product" class="nav-link {% if module == 'product' %}active{% endif %}">Products</a></li>
+                <li class="nav-item"><a href="/contact" class="nav-link {% if module == 'contact' %}active{% endif %}">contact</a></li>
+                <li class="nav-item"><a href="/about" class="nav-link {% if module == 'about' %}active{% endif %}">about</a></li>
+            </ul>
+             <div class="form-inline my-2 my-lg-0">
+                <a
+                        href="/cart"
+                        class="btn btn-outline-success my-2 my-sm-0"
+                        type="button"
+                        id="cart"
+                >
+
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<main class="py-5 mt-5">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+<footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About ShopHub</h3>
+                    <p>Your one-stop destination for quality products at affordable prices. We're committed to providing excellent customer service and fast shipping.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="product.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p>&copy; 2024 ShopHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+<script>
+    let cart_list = JSON.parse(localStorage.getItem('cart_list') ?? '[]')
+    let btn_add_to_cart = document.querySelectorAll('.btn_add_to_cart')
+    let cart = document.getElementById('cart')
+
+    let cart_list_tbody = document.getElementById('cart_list_tbody')
+    let cart_list1 = document.getElementById('cart_list1')
+
+    let label_total_usd = document.getElementById('label_total_usd')
+    let label_total_khr = document.getElementById('label_total_khr')
+
+    cart.innerText = `Cart(${cart_list.length})`
+   // Fix your add-to-cart click handler to merge quantities instead of pushing duplicates:
+    btn_add_to_cart.forEach(item => {
+    item.addEventListener('click', function () {
+         let dpl_index = cart_list.findIndex(cart_item => cart_item.title === this.getAttribute('data-title'))
+            if (dpl_index > -1) {
+                cart_list[dpl_index].qty += 1
+        } else {
+            cart_list.push({
+               'id': this.getAttribute('data-id'),
+                'title': this.getAttribute('data-title'),
+                'qty': 1,
+                'price': this.getAttribute('data-price'),
+                'thumbnail': this.getAttribute('data-thumbnail'),
+            });
+        }
+
+        localStorage.setItem('cart_list', JSON.stringify(cart_list));
+        cart.innerText = `Cart(${cart_list.length})`;
+        Swal.fire({
+            title: "Add To Cart Successfully!",
+            icon: "success",
+            draggable: true
+        });
+        renderCartList();
+        total();
+
+
+    })
+})
+
+    renderCartList()
+    total()
+
+        function renderCartList() {
+            let string_tr = ''
+            cart_list_tbody.innerHTML = ''
+            cart_list.forEach((item, index) => {
+                string_tr += `      <tr>
+                                    <td style="width:80px">
+                                        <img src="${item.thumbnail}" class="img-fluid rounded" alt="Product 1">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0">${item.title}</h6>
+                                    </td>
+                                    <td>$${item.price}</td>
+                                    <td>
+                                      <div class="input-group input-group-sm" style="max-width: 110px;">
+                                        <button onclick="removeQty(${index})" class="btn btn-outline-secondary" type="button">-</button>
+                                        <span class="input-group-text px-3">${item.qty}</span>
+                                        <button onclick="addQty(${index})" class="btn btn-outline-secondary" type="button">+</button>
+                                      </div>
+                                    </td>
+
+
+
+                                    <td>$${item.qty * item.price}</td>
+                                    <td>
+                                        <button onclick="removeCartItem(${index})" class="btn btn-sm btn-danger">X</button>
+                                    </td>
+                                </tr>`
+            })
+            cart_list_tbody.innerHTML = string_tr
+
+            cart.innerText = `Cart(${cart_list.length})`; // update count badge
+            total(); // update totals on render
+        }
+        function checkCartList() {
+            let string_tr = ''
+            cart_list1.innerHTML = ''
+            cart_list.forEach((item, index) => {
+                string_tr += `      <tr>
+
+                                    <td>
+                                        <h6 class="mb-0">${item.title}</h6>
+                                    </td>
+                                    <td>$${item.price}</td>
+                                    <td style="text-align: center">
+                                        ${item.qty}
+                                    </td>
+                                    <td>$${item.qty * item.price}</td>
+
+                                </tr>`
+            })
+            cart_list1.innerHTML = string_tr
+
+            cart.innerText = `Cart(${cart_list.length})`; // update count badge
+            total(); // update totals on render
+        }
+  function addQty(index) {
+    cart_list[index].qty++;
+    localStorage.setItem('cart_list', JSON.stringify(cart_list));
+    renderCartList();
+    total();
+}
+
+function removeQty(index) {
+    if (cart_list[index].qty <= 1) {
+        removeCartItem(index);
+    } else {
+        cart_list[index].qty--;
+        localStorage.setItem('cart_list', JSON.stringify(cart_list));
+        renderCartList();
+        total();
+    }
+     Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to Remove this item",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Remove it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            cart_list.splice(index, 1);
+            localStorage.setItem('cart_list', JSON.stringify(cart_list));
+            renderCartList();
+            total();
+            cart.innerText = `Cart(${cart_list.length})`;
+        }
+    });
+}
+
+function removeCartItem(index) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to Delete this item",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            cart_list.splice(index, 1);
+            localStorage.setItem('cart_list', JSON.stringify(cart_list));
+            renderCartList();
+            total();
+            cart.innerText = `Cart(${cart_list.length})`;
+        }
+    });
+}
+
+function total() {
+    let total_usd = 0;
+    cart_list.forEach(item => {
+        total_usd += parseFloat(item.qty) * parseFloat(item.price);
+    });
+    let total_khr = total_usd * 4100;
+    total_khr = Math.ceil(total_khr / 100) * 100;
+
+    label_total_usd.innerText = `$${total_usd.toFixed(2)}`;
+    label_total_khr.innerText = `៛${total_khr.toLocaleString()}`;
+}
+</script>
+</body>
+</html>

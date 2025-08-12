@@ -1,0 +1,141 @@
+{% extends 'front/master.html' %}
+
+{% block content %}
+
+<div class="container my-5">
+    <h2 class="mb-4 text-center text-dark fw-bold">Checkout</h2>
+
+    <div class="row">
+        <!-- Checkout form -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white fw-bold">
+                    Billing Details
+                </div>
+                <div class="card-body p-4">
+                    <form id="checkoutForm" action="/place_order" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Shipping Address</label>
+                            <textarea id="address" name="address" rows="3" class="form-control" placeholder="Enter your shipping address" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="payment" class="form-label">Payment Method</label>
+                            <select id="payment" name="payment_method" class="form-select" required>
+                                <option value="">Select a payment method</option>
+                                <option value="cash_on_delivery">Cash on Delivery</option>
+                                <option value="credit_card">Credit Card</option>
+                                <option value="paypal">PayPal</option>
+                            </select>
+                        </div>
+                         <input type="hidden" name="cart_data" id="cart_data" />
+                        <button type="submit" class="btn btn-success w-100 mt-3">
+                            <i class="fas fa-check"></i> Place Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order summary -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white fw-bold d-flex justify-content-between align-items-center">
+                    Order Summary
+                    <span id="cart" class="badge bg-light text-primary"></span>
+                </div>
+                <div class="card-body p-4">
+                    <table class="table table-borderless mb-3">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id ="cart_list1"><tbody>
+                    </table>
+                    <hr>
+                    <h5 class="d-flex justify-content-between align-items-center">
+                        <span class="text-dark">Total (USD)</span>
+                        <span id="label_total_usd" class="text-primary fw-bold">$0.00</span>
+                    </h5>
+                    <h5 class="d-flex justify-content-between align-items-center">
+                        <span class="text-dark">Total (KHR)</span>
+                        <span id="label_total_khr" class="text-primary fw-bold">៛0</span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cart_list = JSON.parse(localStorage.getItem('cart_list')) || [];
+    const cartBadge = document.getElementById('cart');
+    {#const check_list_tbody = document.getElementById('check_list_tbody');#}
+    {#const labelUsd = document.getElementById('label_total_usd');#}
+    {#const labelKhr = document.getElementById('label_total_khr');#}
+    const checkoutForm = document.getElementById('checkoutForm');
+
+    if (cartBadge) {
+        cartBadge.innerText = `Cart (${cart_list.length})`;
+    }
+    checkCartList()
+
+
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', (e) => {
+            const cart_list = JSON.parse(localStorage.getItem('cart_list')) || [];
+            document.getElementById('cart_data').value = JSON.stringify(cart_list);
+           let timerInterval;
+            Swal.fire({
+              title: "Thank You for buy!",
+              {#html: "I will close in <b></b> milliseconds.",#}
+              timer: 1000,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 3000);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+              }
+});
+
+            setTimeout(() => {
+                localStorage.removeItem('cart_list');
+            }, 500);
+        });
+
+
+    }
+});
+
+
+
+</script>
+
+{% endblock %}

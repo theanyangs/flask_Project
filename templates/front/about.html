@@ -1,0 +1,499 @@
+{% extends 'front/master.html' %}
+{% block head %}
+<style>
+    .hero-section {
+        background: white;
+        color: black;
+        padding: 80px 0;
+        margin-top: -100px;
+        padding-top: 180px;
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero-content p {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .stats-section {
+        padding: 80px 0;
+        background: white;
+    }
+    .about-content {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .content-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        margin-bottom: 3rem;
+        transition: transform 0.3s ease;
+    }
+
+    .content-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 2px;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .feature-card:hover::before {
+        left: 100%;
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: white;
+        font-size: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(10deg);
+    }
+
+    .feature-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+    }
+
+    .feature-description {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .timeline-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .timeline::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -2px;
+        border-radius: 2px;
+    }
+
+    .timeline-item {
+        padding: 10px 40px;
+        position: relative;
+        background-color: inherit;
+        width: 50%;
+    }
+
+    .timeline-item.left {
+        left: 0;
+    }
+
+    .timeline-item.right {
+        left: 50%;
+    }
+
+    .timeline-item::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        right: -10px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        top: 15px;
+        z-index: 1;
+    }
+
+    .timeline-item.right::after {
+        left: -10px;
+    }
+
+    .timeline-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+
+    .timeline-item:hover .timeline-content {
+        transform: scale(1.05);
+    }
+
+    .timeline-date {
+        color: #667eea;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .cta-section {
+        padding: 80px 0;
+        background: #032965;
+        color: white;
+        text-align: center;
+    }
+
+    .cta-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .cta-text {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta-button {
+        background: white;
+        color: #667eea;
+        padding: 1rem 3rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        color: #667eea;
+    }
+
+    @media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+
+        .timeline::after {
+            left: 31px;
+        }
+
+        .timeline-item {
+            width: 100%;
+            padding-left: 70px;
+            padding-right: 25px;
+        }
+
+        .timeline-item.right {
+            left: 0%;
+        }
+
+        .timeline-item::after {
+            left: 21px;
+        }
+    }
+
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+
+    .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1 class="fade-in-up">About Don't thai to me Store</h1>
+            <p class="fade-in-up">Discover the story behind your favorite shopping destination. We're more than just a store - we're your trusted partner in finding quality products at amazing prices.</p>
+        </div>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="about-content">
+    <div class="container">
+        <div class="content-card fade-in-up">
+            <h2 class="section-title">Our Story</h2>
+            <p class="lead text-center mb-4">Founded in 2020, TEN11 Store began as a vision to revolutionize online shopping by combining cutting-edge technology with exceptional customer service.</p>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>What started as a small team with big dreams has grown into a trusted e-commerce platform serving thousands of customers worldwide. Our journey is built on the foundation of innovation, quality, and customer satisfaction.</p>
+                    <p>We believe that shopping should be more than just a transaction - it should be an experience that delights and inspires. That's why we've invested heavily in creating a platform that's not just functional, but beautiful and intuitive.</p>
+                </div>
+                <div class="col-lg-6">
+                    <p>Our commitment to excellence extends beyond just our products. We've built relationships with trusted suppliers and manufacturers to ensure that every item in our catalog meets our high standards for quality and value.</p>
+                    <p>Today, TEN11 Store continues to evolve, always staying ahead of trends and technology to provide our customers with the best possible shopping experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="stats-section">
+    <div class="container">
+        <h2 class="section-title fade-in-up">Why Choose Don't thai to me Store?</h2>
+        <div class="feature-grid">
+            <div class="feature-card fade-in-up">
+                <div class="feature-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h3 class="feature-title">Secure Shopping</h3>
+                <p class="feature-description">Your security is our priority. We use advanced encryption and secure payment gateways to protect your personal information and transactions.</p>
+            </div>
+            <div class="feature-card fade-in-up">
+                <div class="feature-icon">
+                    <i class="bi bi-lightning-charge"></i>
+                </div>
+                <h3 class="feature-title">Fast Delivery</h3>
+                <p class="feature-description">Get your orders quickly with our optimized logistics network. Most orders are processed within 24 hours and delivered in 2-5 business days.</p>
+            </div>
+            <div class="feature-card fade-in-up">
+                <div class="feature-icon">
+                    <i class="bi bi-award"></i>
+                </div>
+                <h3 class="feature-title">Quality Guarantee</h3>
+                <p class="feature-description">We stand behind every product we sell. If you're not completely satisfied, we offer hassle-free returns and exchanges within 30 days.</p>
+            </div>
+            <div class="feature-card fade-in-up">
+                <div class="feature-icon">
+                    <i class="bi bi-headset"></i>
+                </div>
+                <h3 class="feature-title">24/7 Support</h3>
+                <p class="feature-description">Our dedicated customer service team is available around the clock to help you with any questions or concerns you may have.</p>
+            </div>
+            <div class="feature-card fade-in-up">
+                <div class="feature-icon">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+                <h3 class="feature-title">Best Prices</h3>
+                <p class="feature-description">We work directly with manufacturers and suppliers to bring you competitive prices without compromising on quality.</p>
+            </div>
+            <div class="feature-card fade-in-up">
+                <div class="feature-icon">
+                    <i class="bi bi-globe"></i>
+                </div>
+                <h3 class="feature-title">Global Reach</h3>
+                <p class="feature-description">Whether you're shopping from across town or across the globe, we deliver to customers in over 50 countries worldwide.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+
+
+<!-- Timeline Section -->
+<section class="timeline-section">
+    <div class="container">
+        <h2 class="section-title fade-in-up">Our Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item left fade-in-up">
+                <div class="timeline-content">
+                    <div class="timeline-date">2020</div>
+                    <h3 class="timeline-title">The Beginning</h3>
+                    <p>TEN11 Store was founded with a simple mission: to make online shopping better for everyone.</p>
+                </div>
+            </div>
+            <div class="timeline-item right fade-in-up">
+                <div class="timeline-content">
+                    <div class="timeline-date">2021</div>
+                    <h3 class="timeline-title">Rapid Growth</h3>
+                    <p>Reached 1,000 customers and expanded our product catalog to over 2,000 items across multiple categories.</p>
+                </div>
+            </div>
+            <div class="timeline-item left fade-in-up">
+                <div class="timeline-content">
+                    <div class="timeline-date">2022</div>
+                    <h3 class="timeline-title">International Expansion</h3>
+                    <p>Launched international shipping and established partnerships with global suppliers and logistics companies.</p>
+                </div>
+            </div>
+            <div class="timeline-item right fade-in-up">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023</div>
+                    <h3 class="timeline-title">Mobile Revolution</h3>
+                    <p>Launched our mobile app and optimized our platform for mobile shopping, reaching 10,000+ active users.</p>
+                </div>
+            </div>
+            <div class="timeline-item left fade-in-up">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024</div>
+                    <h3 class="timeline-title">Innovation & AI</h3>
+                    <p>Integrated AI-powered recommendations and launched our sustainability initiative for eco-friendly packaging.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="fade-in-up">
+            <h2 class="cta-title">Ready to Start Shopping?</h2>
+            <p class="cta-text">Join thousands of satisfied customers who trust Don't thai to me Store for their shopping needs. Discover amazing products at unbeatable prices.</p>
+            <a href="/product" class="cta-button">
+                <i class="bi bi-bag me-2"></i>
+                Shop Now
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Fade in animation on scroll
+    function fadeInOnScroll() {
+        const elements = document.querySelectorAll('.fade-in-up');
+
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (elementTop < windowHeight - 100) {
+                element.classList.add('visible');
+            }
+        });
+    }
+
+    // Initial check
+    fadeInOnScroll();
+
+    // Check on scroll
+    window.addEventListener('scroll', fadeInOnScroll);
+
+    // Counter animation for stats
+    function animateCounters() {
+        const counters = document.querySelectorAll('.stat-number');
+
+        counters.forEach(counter => {
+            const target = counter.textContent;
+            const number = parseInt(target.replace(/\D/g, ''));
+            const suffix = target.replace(/[\d,]/g, '');
+
+            let current = 0;
+            const increment = number / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= number) {
+                    current = number;
+                    clearInterval(timer);
+                }
+                counter.textContent = Math.floor(current).toLocaleString() + suffix;
+            }, 20);
+        });
+    }
+
+    // Trigger counter animation when stats section comes into view
+    const statsSection = document.querySelector('.stats-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+</script>
+{% endblock %}

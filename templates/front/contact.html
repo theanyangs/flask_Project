@@ -1,0 +1,453 @@
+{% extends 'front/master.html' %}
+
+
+{% block head %}
+<style>
+    .hero-section {
+        background: white;
+        color: black;
+        padding: 80px 0;
+        margin-top: -100px;
+        padding-top: 180px;
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero-content p {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .contact-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .contact-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+    .contact-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .contact-form-section {
+        padding: 3rem;
+    }
+
+    .contact-info-section {
+        background: #032965;
+        color: white;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    .section-title.white {
+        color: white;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 2px;
+    }
+
+    .section-title.white::after {
+        background: white;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.8rem;
+        display: block;
+        font-size: 1.1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control.textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .submit-btn {
+        background: #032965;
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .contact-info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .contact-info-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(10px);
+    }
+
+    .contact-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1.5rem;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .contact-details h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-details p {
+        opacity: 0.9;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+
+
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+
+    .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .success-message {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: none;
+    }
+
+    .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1 class="fade-in-up">Get In Touch</h1>
+            <p class="fade-in-up">We'd love to hear from you! Whether you have questions, feedback, or need support, our team is here to help.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Contact Section -->
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-card fade-in-up">
+            <div class="row g-0">
+                <!-- Contact Form -->
+                <div class="col-lg-7">
+                    <div class="contact-form-section">
+                        <h2 class="section-title">Send us a Message</h2>
+                        <p class="mb-4 text-muted">Fill out the form below, and we'll get back to you within 24 hours.</p>
+
+                        <div class="success-message" id="successMessage">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Thank you for your message! We'll get back to you soon.
+                        </div>
+
+                        <div class="error-message" id="errorMessage">
+                            <i class="bi bi-exclamation-circle me-2"></i>
+                            Please fill in all required fields.
+                        </div>
+
+                        <form id="contactForm" method="POST" action="/contact">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" name="first_name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name *</label>
+                                        <input type="text" class="form-control" name="last_name" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone">
+                            </div>
+
+{#                            <div class="form-group">#}
+{#                                <label class="form-label">Subject *</label>#}
+{#                                <select class="form-control" name="subject" required>#}
+{#                                    <option value="">Choose a subject...</option>#}
+{#                                    <option value="general">General Inquiry</option>#}
+{#                                    <option value="order">Order Support</option>#}
+{#                                    <option value="technical">Technical Issue</option>#}
+{#                                    <option value="billing">Billing Question</option>#}
+{#                                    <option value="returns">Returns & Refunds</option>#}
+{#                                    <option value="partnership">Partnership Inquiry</option>#}
+{#                                    <option value="other">Other</option>#}
+{#                                </select>#}
+{#                            </div>#}
+
+                            <div class="form-group">
+                                <label class="form-label">Message *</label>
+                                <textarea class="form-control textarea" name="message" placeholder="Please describe your inquiry in detail..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="submit-btn">
+                                <i class="bi bi-send me-2"></i>
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-5">
+                    <div class="contact-info-section">
+                        <h2 class="section-title white">Contact Information</h2>
+                        <p class="mb-4 opacity-75">Reach out to us through any of these channels. We're here to help!</p>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Address</h4>
+                                <p>271 Street<br>Koh Toch District<br>Cambodai</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Phone</h4>
+                                <p>+083 739 273<br>Mon - Fri: 9:00 AM - 6:00 PM EST</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Email</h4>
+                                <p>support@don'tthaitome.com<br>info@don'tthaitome.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-chat-dots"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Live Chat</h4>
+                                <p>Available 24/7<br>Click the chat bubble in the bottom right</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Contact Options -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Fade in animation on scroll
+    function fadeInOnScroll() {
+        const elements = document.querySelectorAll('.fade-in-up');
+
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (elementTop < windowHeight - 100) {
+                element.classList.add('visible');
+            }
+        });
+    }
+
+    // Initial check
+    fadeInOnScroll();
+
+    // Check on scroll
+    window.addEventListener('scroll', fadeInOnScroll);
+
+    // FAQ Toggle
+    function toggleFAQ(element) {
+        const faqItem = element.parentElement;
+        const isActive = faqItem.classList.contains('active');
+
+        // Close all FAQ items
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // Open clicked item if it wasn't active
+        if (!isActive) {
+            faqItem.classList.add('active');
+        }
+    }
+
+    // Contact Form Handling
+   document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const form = this;
+    const formData = new FormData(form);
+
+    // Basic validation example (you can keep yours)
+    const data = Object.fromEntries(formData);
+    if (!data.first_name || !data.last_name || !data.email || !data.message) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    const submitBtn = form.querySelector('.submit-btn');
+    const originalText = submitBtn.innerHTML;
+
+    submitBtn.innerHTML = 'Sending...';
+    submitBtn.disabled = true;
+
+    fetch('/contact', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(res => {
+        if (res.success) {
+            Swal.fire("Send message success");
+            form.reset();        // Clear form fields
+        } else if (res.error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+        }
+    })
+    .catch(() => {
+        alert('Failed to send message. Please try again later.');
+    })
+    .finally(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+
+
+</script>
+{% endblock %}

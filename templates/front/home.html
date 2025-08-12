@@ -1,0 +1,117 @@
+{% extends 'front/master.html' %}
+{% block head %}
+    <style>
+ /* Card Footer Styling */
+.card-footer {
+    background: #fafafa;
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+/* Add To Cart Button */
+.btn_add_to_cart {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #19a6fb, #94c2f6); /* warm orange gradient */
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    {#box-shadow: 0 4px 12px rgba(0, 234, 255, 0.25);#}
+}
+
+/* Hover effect */
+.btn_add_to_cart:hover {
+    background: linear-gradient(135deg, #19a6fb, #94c2f6);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgb(25, 166, 251);
+}
+
+/* Click effect */
+.btn_add_to_cart:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(255, 87, 34, 0.2);
+}
+
+/* Product Image Container */
+.product-image {
+    position: relative;
+    background: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Product Image itself */
+.product-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background-color: #f5f7fa; /* softer background */
+    border-radius: 6px;
+}
+
+/* Category/Discount Badge */
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #2196f3, #1976d2); /* blue gradient */
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+</style>
+{% endblock %}
+{% block content %}
+
+    {#product-card#}
+    <div class="container mt-2">
+        <div class="row">
+            {% for item in products %}
+                <div class="col-md-3 col-sm-12 mb-2">
+                    <div class="card">
+                        <div class="product-image">
+                            <img src="{{ item['thumbnail'] }}"
+                                 style="height: 200px; object-fit: contain"
+                                 class="card-img-top" alt="Product Image">
+                            <div class="discount-badge">{{ item['category'] }}</div>
+
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="mb-1">
+                                <span class="price">{{ item['price'] }}</span>
+                            </p>
+                            <p class="product-title mb-0">{{ item['title'] }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <input
+                                    type="button"
+                                    class="btn btn-sm btn-outline-primary w-100 btn_add_to_cart"
+                                    value="Add To Cart"
+                                    data-id="{{ item['id'] }}"
+                                    data-title="{{ item['title'] }}"
+                                    data-thumbnail="{{ item['thumbnail'] }}"
+                                    data-price="{{ item['price'] }}"
+                            >
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
