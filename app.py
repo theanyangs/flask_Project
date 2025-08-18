@@ -1823,9 +1823,7 @@ def product():
 @app.get('/cart')
 def cart():
     return render_template('front/cart.html', module='cart')
-# @app.get('/contact')
-# def contact():
-#     return render_template('front/contact.html', module='contact')
+
 @app.get('/about')
 def about():
     return render_template('front/about.html', module='about')
@@ -1986,7 +1984,7 @@ def contact():
 @app.route('/contact')
 def index():
     return render_template('front/contact.html')
-  # your Jinja template file
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
